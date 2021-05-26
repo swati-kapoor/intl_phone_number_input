@@ -38,21 +38,34 @@ class SelectorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return selectorConfig.selectorType == PhoneInputSelectorType.DROPDOWN
         ? countries.isNotEmpty && countries.length > 1
-            ? DropdownButtonHideUnderline(
-                child: DropdownButton<Country>(
-                  key: Key(TestHelper.DropdownButtonKeyValue),
-                  hint: Item(
-                    country: country,
-                    showFlag: selectorConfig.showFlags,
-                    useEmoji: selectorConfig.useEmoji,
-                    leadingPadding: selectorConfig.leadingPadding,
-                    trailingSpace: selectorConfig.trailingSpace,
-                    textStyle: selectorTextStyle,
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton<Country>(
+                      key: Key(TestHelper.DropdownButtonKeyValue),
+                      hint: Item(
+                        country: country,
+                        showFlag: selectorConfig.showFlags,
+                        useEmoji: selectorConfig.useEmoji,
+                        leadingPadding: selectorConfig.leadingPadding,
+                        trailingSpace: selectorConfig.trailingSpace,
+                        textStyle: selectorTextStyle,
+                      ),
+                      value: country,
+                      items: mapCountryToDropdownItem(countries),
+                      onChanged: isEnabled ? onCountryChanged : null,
+                    ),
                   ),
-                  value: country,
-                  items: mapCountryToDropdownItem(countries),
-                  onChanged: isEnabled ? onCountryChanged : null,
-                ),
+                  Container(
+                    color: searchBoxDecoration!.hoverColor,
+                    width: 1,
+                    height: 55,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
               )
             : Item(
                 country: country,
@@ -69,13 +82,10 @@ class SelectorButton extends StatelessWidget {
             onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
                 ? () async {
                     Country? selected;
-                    if (selectorConfig.selectorType ==
-                        PhoneInputSelectorType.BOTTOM_SHEET) {
-                      selected = await showCountrySelectorBottomSheet(
-                          context, countries);
+                    if (selectorConfig.selectorType == PhoneInputSelectorType.BOTTOM_SHEET) {
+                      selected = await showCountrySelectorBottomSheet(context, countries);
                     } else {
-                      selected =
-                          await showCountrySelectorDialog(context, countries);
+                      selected = await showCountrySelectorDialog(context, countries);
                     }
 
                     if (selected != null) {
@@ -98,8 +108,7 @@ class SelectorButton extends StatelessWidget {
   }
 
   /// Converts the list [countries] to `DropdownMenuItem`
-  List<DropdownMenuItem<Country>> mapCountryToDropdownItem(
-      List<Country> countries) {
+  List<DropdownMenuItem<Country>> mapCountryToDropdownItem(List<Country> countries) {
     return countries.map((country) {
       return DropdownMenuItem<Country>(
         value: country,
@@ -116,8 +125,7 @@ class SelectorButton extends StatelessWidget {
   }
 
   /// shows a Dialog with list [countries] if the [PhoneInputSelectorType.DIALOG] is selected
-  Future<Country?> showCountrySelectorDialog(
-      BuildContext context, List<Country> countries) {
+  Future<Country?> showCountrySelectorDialog(BuildContext context, List<Country> countries) {
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -138,16 +146,13 @@ class SelectorButton extends StatelessWidget {
   }
 
   /// shows a Dialog with list [countries] if the [PhoneInputSelectorType.BOTTOM_SHEET] is selected
-  Future<Country?> showCountrySelectorBottomSheet(
-      BuildContext context, List<Country> countries) {
+  Future<Country?> showCountrySelectorBottomSheet(BuildContext context, List<Country> countries) {
     return showModalBottomSheet(
       context: context,
       clipBehavior: Clip.hardEdge,
       isScrollControlled: isScrollControlled,
       backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))),
       builder: (BuildContext context) {
         return Stack(children: [
           GestureDetector(

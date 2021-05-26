@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Demo',
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       darkTheme: darkTheme,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -39,52 +39,57 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            InternationalPhoneNumberInput(
-              onInputChanged: (PhoneNumber number) {
-                print(number.phoneNumber);
-              },
-              onInputValidated: (bool value) {
-                print(value);
-              },
-              selectorConfig: SelectorConfig(
-                selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              InternationalPhoneNumberInput(
+                onInputChanged: (PhoneNumber number) {
+                  print(number.phoneNumber);
+                },
+                onInputValidated: (bool value) {
+                  print(value);
+                },
+                selectorConfig: SelectorConfig(
+                  selectorType: PhoneInputSelectorType.DROPDOWN,
+                  setSelectorButtonAsPrefixIcon: true
+                ),
+                ignoreBlank: false,
+                autoValidateMode: AutovalidateMode.disabled,
+                selectorTextStyle: TextStyle(color: Colors.black),
+                initialValue: number,
+                textFieldController: controller,
+                searchBoxDecoration: InputDecoration(hoverColor: Colors.grey),
+                formatInput: false,
+                keyboardType:
+                    TextInputType.numberWithOptions(signed: true, decimal: true),
+                inputBorder: OutlineInputBorder(),
+                onSaved: (PhoneNumber number) {
+                  print('On Saved: $number');
+                },
               ),
-              ignoreBlank: false,
-              autoValidateMode: AutovalidateMode.disabled,
-              selectorTextStyle: TextStyle(color: Colors.black),
-              initialValue: number,
-              textFieldController: controller,
-              formatInput: false,
-              keyboardType:
-                  TextInputType.numberWithOptions(signed: true, decimal: true),
-              inputBorder: OutlineInputBorder(),
-              onSaved: (PhoneNumber number) {
-                print('On Saved: $number');
-              },
-            ),
-            ElevatedButton(
-              onPressed: () {
-                formKey.currentState.validate();
-              },
-              child: Text('Validate'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                getPhoneNumber('+15417543010');
-              },
-              child: Text('Update'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                formKey.currentState.save();
-              },
-              child: Text('Save'),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: () {
+                  formKey.currentState.validate();
+                },
+                child: Text('Validate'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  getPhoneNumber('+15417543010');
+                },
+                child: Text('Update'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  formKey.currentState.save();
+                },
+                child: Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );
