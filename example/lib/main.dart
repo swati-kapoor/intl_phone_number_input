@@ -60,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 autoValidateMode: AutovalidateMode.disabled,
                 selectorTextStyle: TextStyle(color: Colors.black),
                 initialValue: number,
+                textAlignVertical: TextAlignVertical(y:0.2),
+                codeStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 textFieldController: controller,
                 searchBoxDecoration: InputDecoration(hoverColor: Colors.grey),
                 formatInput: false,

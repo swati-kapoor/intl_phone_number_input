@@ -85,6 +85,8 @@ class InternationalPhoneNumberInput extends StatefulWidget {
 
   final List<String>? countries;
 
+  final TextStyle? codeStyle;
+
   InternationalPhoneNumberInput(
       {Key? key,
       this.selectorConfig = const SelectorConfig(),
@@ -94,6 +96,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.onFieldSubmitted,
       this.validator,
       this.onSaved,
+        this.codeStyle,
       this.textFieldController,
       this.keyboardAction,
       this.keyboardType = TextInputType.phone,
@@ -289,7 +292,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
           Text(
             '${country!.dialCode}  ',
             textDirection: TextDirection.ltr,
-            style: widget.textStyle,
+            style: widget.codeStyle,
           ),
         ],
       ));
